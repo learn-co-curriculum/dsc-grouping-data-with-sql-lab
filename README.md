@@ -91,17 +91,9 @@ Returns the total number of `HR` hit by Babe Ruth during his career
 #Your code here
 ```
 
-#### average_hr_per_year
-Returns the average number of `HR` hit in a given year
-
-
-```python
-#Your code here
-```
-
 
 #### year_and_games_with_least_hr
-In the previous query, we learned that Babe Ruth hit 0 `HR` one year.  That statistic might not be indicative of a typical Babe Ruth season if he played in only a handful of games that year.  Let's figure out how many games he played that season.  Select the `year` and `games` from the season in which Ruth hit 0 `HR`.
+Babe Ruth hit 0 `HR` one year.  That statistic might not be indicative of a typical Babe Ruth season if he played in only a handful of games that year.  Let's figure out how many games he played that season.  Select the `year` and `games` from the season in which Ruth hit 0 `HR`.
 
 
 ```python
