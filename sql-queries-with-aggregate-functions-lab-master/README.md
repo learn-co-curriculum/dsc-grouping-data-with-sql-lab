@@ -7,15 +7,15 @@ In this lab we will query data from a table populated with Babe Ruth's career hi
 
 ## Objectives
 
-* Write queries with aggregate functions like `COUNT`, `MAX`, `MIN`, and `SUM`
-* Create an alias for the return value of an aggregate function
-* Use `GROUP BY` to sort the data sets returned by aggregate functions
-* Compare aggregates using the `HAVING` clause
+1. Write queries with aggregate functions like `COUNT`, `MAX`, `MIN`, and `SUM`
+2. Create an alias for the return value of an aggregate function
+3. Use `GROUP BY` to sort the data sets returned by aggregate functions
+4. Compare aggregates using the `HAVING` clause
 
 ## Babe Ruth -- Career Hitting Statistics
 
 
-We will query from the `babe_ruth_stats` table featured below.
+We will query from the `babe_ruth_stats` table featured below.  Write your queries as strings inside the functions already defined in `select.py`.
 
 year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 ----|-----|------|-------|-------|----|--|-----|----|---|-------|---|--|--|------
@@ -42,113 +42,45 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 1934|"NY" |"AL"  |17     |4      |105 |22|125  |78  |84 |365    |104|1 |63|0.288
 1935|"BOS"|"NL"  |0      |0      |13  |6 |28   |13  |12 |72     |20 |0 |24|0.181
 
-# Connect to the Database
-
-
-```python
-#Your code here
-```
-
 ## Queries
 
 #### total_seasons
 Counts the total number of `year`s that Babe Ruth played professional baseball
 
-
-```python
-#Your code here
-```
-
 #### total_seasons_with_ny
 Counts the total number of `year`s played with the `NY` Yankees
-
-
-```python
-#Your code here
-```
 
 #### most_hr
 Selects the most `HR` that Babe Ruth hit in one season
 
-
-```python
-#Your code here
-```
-
 #### least_hr
 Select the least number of `HR` hit in one season
-
-
-```python
-#Your code here
-```
 
 #### total_hr
 Returns the total number of `HR` hit by Babe Ruth during his career
 
-
-```python
-#Your code here
-```
-
 #### average_hr_per_year
 Returns the average number of `HR` hit in a given year
-
-
-```python
-#Your code here
-```
-
 
 #### year_and_games_with_least_hr
 In the previous query, we learned that Babe Ruth hit 0 `HR` one year.  That statistic might not be indicative of a typical Babe Ruth season if he played in only a handful of games that year.  Let's figure out how many games he played that season.  Select the `year` and `games` from the season in which Ruth hit 0 `HR`.
 
-
-```python
-#Your code here
-```
-
 #### select_yr_and_min_hr_with_at_least_100_games
 We determined that Babe Ruth hit 0 homeruns in his first year, when he played only five games.  Let's avoid the outliers by looking at years in which Ruth played in at least 100 games.  Select the `year` with the least number of  `HR` from only those seasons with over 100 `games` played.
-
-
-```python
-#Your code here
-```
 
 #### avg_batting_avg_aliased_as_career_average
 Select the average, `AVG`, of Ruth's batting averages.  The header of the result would be `AVG(AVG)` which is quite confusing, so provide an alias of `career_average`.
 
-
-```python
-#Your code here
-```
-
 #### total_years_and_hits_per_team
 Select the `team` and the total number of `year`s and `hits`, but represent the results on a per team basis.  (**Hint**: you will need to sort the result with a certain clause...)
-
-
-```python
-#Your code here
-```
 
 #### total_years_and_hr_per_team_ordered_by_hr
 The previous query returns Babe Ruth's Boston stats first.  However, the overwhelming majority of Ruth's career statistics came when he played for the `NY` Yankees.  Shouldn't we list Ruth's `NY` stats first?  Write the previous query again, but this time we want Babe Ruth's total `HR`s instead of his total `hits`.  Make sure that the resulting data set lists Babe Ruth's stats as a Yankee first.  
 > **Hint**:  You will need to chain another sorting clause after `GROUP BY`.
 
-
-```python
-#Your code here
-```
-
 #### years_with_on_base_over_300
 We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT hits + BB FROM ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
 > **Hint**: `WHERE` won't work here!
-
-
-```python
-#Your code here
-```
 
 ## Summary
 

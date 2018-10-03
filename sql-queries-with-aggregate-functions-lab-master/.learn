@@ -1,0 +1,12 @@
+tags:
+  - sql
+  - database
+  - jupyter
+  
+languages:
+  - python
+  - sql
+
+jupyter_notebook: true
+
+resources: 0
