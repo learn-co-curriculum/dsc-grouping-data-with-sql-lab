@@ -1,5 +1,5 @@
 
-# Aggregate Functions Lab
+# Grouping Data with SQL - Lab
 
 ## Introduction
 
@@ -12,7 +12,7 @@ In this lab we will query data from a table populated with Babe Ruth's career hi
 * Use `GROUP BY` to sort the data sets returned by aggregate functions
 * Compare aggregates using the `HAVING` clause
 
-## Babe Ruth -- Career Hitting Statistics
+## Babe Ruth - Career Hitting Statistics
 
 
 We will query from the `babe_ruth_stats` table featured below.
@@ -42,7 +42,7 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 1934|"NY" |"AL"  |17     |4      |105 |22|125  |78  |84 |365    |104|1 |63|0.288
 1935|"BOS"|"NL"  |0      |0      |13  |6 |28   |13  |12 |72     |20 |0 |24|0.181
 
-# Connect to the Database
+## Connect to the Database
 
 
 ```python
