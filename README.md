@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this lab we will query data from a table populated with Babe Ruth's career hitting statistics.  We will use aggregate functions to pull interesting information from the table that basic queries cannot track.  We will discover many interesting facts about Babe Ruth, like his total career homeruns and his most homeruns in one season.
+In this lab you'll query data from a table populated with Babe Ruth's career hitting statistics. Then you'll use aggregate functions to pull interesting information from the table that basic queries cannot track.
 
 ## Objectives
 
@@ -55,8 +55,6 @@ import pandas as pd
 conn = sqlite3.connect('babe_ruth.db')
 cur = conn.cursor()
 ```
-
-## Queries
 
 #### total_seasons
 Counts the total number of `year`s that Babe Ruth played professional baseball
@@ -356,57 +354,6 @@ df
 
 
 
-
-#### year_and_games_with_least_hr
-Babe Ruth hit 0 `HR` one year.  That statistic might not be indicative of a typical Babe Ruth season if he played in only a handful of games that year.  Let's figure out how many games he played that season.  Select the `year` and `games` from the season in which Ruth hit 0 `HR`.
-
-
-```python
-cur.execute("""select year, games
-                      from babe_ruth_stats
-                      where HR = 0;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
-```
-
-
-
-
-<div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>year</th>
-      <th>games</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1914</td>
-      <td>5</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 #### select_yr_and_min_hr_with_at_least_100_games
 We determined that Babe Ruth hit 0 homeruns in his first year, when he played only five games.  Let's avoid the outliers by looking at years in which Ruth played in at least 100 games.  Select the `year` with the least number of  `HR` from only those seasons with over 100 `games` played.
 
@@ -560,68 +507,6 @@ df
       <td>NY</td>
       <td>15</td>
       <td>2518</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-#### total_years_and_hr_per_team_ordered_by_hr
-The previous query returns Babe Ruth's Boston stats first.  However, the overwhelming majority of Ruth's career statistics came when he played for the `NY` Yankees.  Shouldn't we list Ruth's `NY` stats first?  Write the previous query again, but this time we want Babe Ruth's total `HR`s instead of his total `hits`.  Make sure that the resulting data set lists Babe Ruth's stats as a Yankee first.  
-> **Hint**:  You will need to chain another sorting clause after `GROUP BY`.
-
-
-```python
-cur.execute("""select team,
-                      count(year) as num_years,
-                      sum(HR) as total_hr
-                      from babe_ruth_stats
-                      group by 1
-                      order by sum(HR) desc;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
-```
-
-
-
-
-<div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>team</th>
-      <th>num_years</th>
-      <th>total_hr</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>NY</td>
-      <td>15</td>
-      <td>659</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>BOS</td>
-      <td>7</td>
-      <td>55</td>
     </tr>
   </tbody>
 </table>
