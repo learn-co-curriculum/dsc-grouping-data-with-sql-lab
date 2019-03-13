@@ -1,9 +1,9 @@
 
-# Aggregate Functions Lab
+# Grouping Data with SQL - Lab
 
 ## Introduction
 
-In this lab you'll query data from a table populated with Babe Ruth's career hitting statistics. Then you'll use aggregate functions to pull interesting information from the table that basic queries cannot track.
+In this lab you'll query data from a table populated with Babe Ruth's career hitting statistics.  Then you'll use aggregate functions to pull interesting information from the table that basic queries cannot track. 
 
 ## Objectives
 
@@ -12,7 +12,7 @@ In this lab you'll query data from a table populated with Babe Ruth's career hit
 * Use `GROUP BY` to sort the data sets returned by aggregate functions
 * Compare aggregates using the `HAVING` clause
 
-## Babe Ruth -- Career Hitting Statistics
+## Babe Ruth - Career Hitting Statistics
 
 
 We will query from the `babe_ruth_stats` table featured below.
@@ -42,7 +42,7 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 1934|"NY" |"AL"  |17     |4      |105 |22|125  |78  |84 |365    |104|1 |63|0.288
 1935|"BOS"|"NL"  |0      |0      |13  |6 |28   |13  |12 |72     |20 |0 |24|0.181
 
-# Connect to the Database
+## Connect to the Database
 
 
 ```python
@@ -56,8 +56,8 @@ conn = sqlite3.connect('babe_ruth.db')
 cur = conn.cursor()
 ```
 
-#### total_seasons
-Counts the total number of `year`s that Babe Ruth played professional baseball
+## Total Seasons
+Return the total number of `year`s that Babe Ruth played professional baseball.
 
 
 ```python
@@ -72,17 +72,17 @@ df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -103,8 +103,8 @@ df
 
 
 
-#### total_seasons_with_ny
-Counts the total number of `year`s played with the `NY` Yankees
+## Seasons with NY
+Return the total number of years Babe Ruth played with the NY Yankees.
 
 
 ```python
@@ -120,17 +120,17 @@ df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -151,8 +151,8 @@ df
 
 
 
-#### most_hr
-Selects the most `HR` that Babe Ruth hit in one season
+## Most HR
+Select the row with the most HR that Babe Ruth hit in one season
 
 
 ```python
@@ -168,17 +168,17 @@ df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -229,8 +229,8 @@ df
 
 
 
-#### least_hr
-Select the least number of `HR` hit in one season
+## Least HR
+Select the row with the least number of HR hit in one season.
 
 
 ```python
@@ -240,23 +240,26 @@ cur.execute("""select *
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 df
+
+#Alternatively one could also write the following query:
+#select * from babe_ruth_stats order by HR ASC limit 1;
 ```
 
 
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -307,8 +310,8 @@ df
 
 
 
-#### total_hr
-Returns the total number of `HR` hit by Babe Ruth during his career
+## Total HR
+Return the total number of `HR` hit by Babe Ruth during his career
 
 
 ```python
@@ -323,17 +326,17 @@ df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -354,17 +357,17 @@ df
 
 
 
-#### select_yr_and_min_hr_with_at_least_100_games
-We determined that Babe Ruth hit 0 homeruns in his first year, when he played only five games.  Let's avoid the outliers by looking at years in which Ruth played in at least 100 games.  Select the `year` with the least number of  `HR` from only those seasons with over 100 `games` played.
+##  5 Worst HR Seasons With at Least 100 Games Playe
+Above you saw that Babe Ruth hit 0 homeruns in his first year, when he played only five games.  To avoid this and other extreme  outliers, first filter the data to those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of number of home runs, where he played over 100 games.
 
 
 ```python
-cur.execute("""select year, hr
+cur.execute("""select *
                       from babe_ruth_stats
                       where games > 100
                       group by 1
-                      order by hr
-                      limit 1;""")
+                      order by hr asc
+                      limit 5;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 df
@@ -374,32 +377,136 @@ df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>id</th>
       <th>year</th>
+      <th>team</th>
+      <th>league</th>
+      <th>doubles</th>
+      <th>triples</th>
+      <th>hits</th>
       <th>HR</th>
+      <th>games</th>
+      <th>runs</th>
+      <th>RBI</th>
+      <th>at_bats</th>
+      <th>BB</th>
+      <th>SB</th>
+      <th>SO</th>
+      <th>AVG</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
+      <td>21</td>
       <td>1934</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>17</td>
+      <td>4</td>
+      <td>105</td>
       <td>22</td>
+      <td>125</td>
+      <td>78</td>
+      <td>84</td>
+      <td>365</td>
+      <td>104</td>
+      <td>1</td>
+      <td>63</td>
+      <td>0.288</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>1919</td>
+      <td>BOS</td>
+      <td>AL</td>
+      <td>34</td>
+      <td>12</td>
+      <td>139</td>
+      <td>29</td>
+      <td>130</td>
+      <td>103</td>
+      <td>114</td>
+      <td>432</td>
+      <td>101</td>
+      <td>7</td>
+      <td>58</td>
+      <td>0.322</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>20</td>
+      <td>1933</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>21</td>
+      <td>3</td>
+      <td>138</td>
+      <td>34</td>
+      <td>137</td>
+      <td>97</td>
+      <td>103</td>
+      <td>459</td>
+      <td>114</td>
+      <td>4</td>
+      <td>90</td>
+      <td>0.301</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9</td>
+      <td>1922</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>24</td>
+      <td>8</td>
+      <td>128</td>
+      <td>35</td>
+      <td>110</td>
+      <td>94</td>
+      <td>99</td>
+      <td>406</td>
+      <td>84</td>
+      <td>2</td>
+      <td>80</td>
+      <td>0.315</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>10</td>
+      <td>1923</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>45</td>
+      <td>13</td>
+      <td>205</td>
+      <td>41</td>
+      <td>152</td>
+      <td>151</td>
+      <td>131</td>
+      <td>522</td>
+      <td>170</td>
+      <td>17</td>
+      <td>93</td>
+      <td>0.393</td>
     </tr>
   </tbody>
 </table>
@@ -407,7 +514,7 @@ df
 
 
 
-#### avg_batting_avg_aliased_as_career_average
+## Average Batting Average
 Select the average, `AVG`, of Ruth's batting averages.  The header of the result would be `AVG(AVG)` which is quite confusing, so provide an alias of `career_average`.
 
 
@@ -423,17 +530,17 @@ df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -454,8 +561,8 @@ df
 
 
 
-#### total_years_and_hits_per_team
-Select the `team` and the total number of `year`s and `hits`, but represent the results on a per team basis.  (**Hint**: you will need to sort the result with a certain clause...)
+## Total Years and Hits Per Team
+Select the total number of years played and hits Babe Ruth had for each team he played for.
 
 
 ```python
@@ -473,17 +580,17 @@ df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -514,9 +621,8 @@ df
 
 
 
-#### years_with_on_base_over_300
+## Number of Years with 300+ On Base
 We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT hits + BB FROM ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
-> **Hint**: `WHERE` won't work here!
 
 
 ```python
@@ -535,17 +641,17 @@ df
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -610,4 +716,4 @@ df
 
 ## Summary
 
-Well done! In this lab we continued adding complexity to our SQL statements and wrote aggregate functions. We were able to build our queries from giving us totals and averages to showing us the total years and homeruns earned by team as well as calculating Babe Ruth's total on base and then selecting only years that met a minimum value of our calculated on base attribute. 
+Well done! In this lab you continued adding complexity to SQL statements and wrote aggregate functions. You were able to build queries that showed the total years and homeruns earned by team as well as calculating Babe Ruth's total on base and then selecting only years that met a minimum value of our calculated on base attribute. 
