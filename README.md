@@ -89,8 +89,8 @@ Return the total number of `HR` hit by Babe Ruth during his career
 #Your code here
 ```
 
-##  5 Worst HR Seasons With at Least 100 Games Playe
-Above you saw that Babe Ruth hit 0 homeruns in his first year, when he played only five games.  To avoid this and other extreme  outliers, first filter the data to those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of number of home runs, where he played over 100 games.
+##  5 Worst HR Seasons With at Least 100 Games Played
+Above you saw that Babe Ruth hit 0 home runs in his first year when he played only five games.  To avoid this and other extreme  outliers, first filter the data to those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of the number of home runs, where he played over 100 games.
 
 
 ```python
@@ -123,4 +123,4 @@ We want to know the years in which Ruth successfully reached base over 300 times
 
 ## Summary
 
-Well done! In this lab you continued adding complexity to SQL statements and wrote aggregate functions. You were able to build queries that showed the total years and homeruns earned by team as well as calculating Babe Ruth's total on base and then selecting only years that met a minimum value of our calculated on base attribute. 
+Well done! In this lab, you continued adding complexity to SQL statements and wrote aggregate functions. You were able to build queries that showed the total years and home runs earned by team as well as calculating Babe Ruth's total on base and then selecting only years that met a minimum value of our calculated on the base attribute. 
