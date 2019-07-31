@@ -49,6 +49,20 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 #Your code here
 ```
 
+
+```python
+# __SOLUTION__ 
+import sqlite3
+import pandas as pd
+```
+
+
+```python
+# __SOLUTION__ 
+conn = sqlite3.connect('babe_ruth.db')
+cur = conn.cursor()
+```
+
 ## Total Seasons
 Return the total number of `year`s that Babe Ruth played professional baseball.
 
@@ -56,6 +70,51 @@ Return the total number of `year`s that Babe Ruth played professional baseball.
 ```python
 #Your code here
 ```
+
+
+```python
+# __SOLUTION__ 
+cur.execute("""select count(year) as num_years
+                      from babe_ruth_stats;""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>num_years</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>22</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 ## Seasons with NY
 Return the total number of years Babe Ruth played with the NY Yankees.
@@ -65,6 +124,52 @@ Return the total number of years Babe Ruth played with the NY Yankees.
 #Your code here
 ```
 
+
+```python
+# __SOLUTION__ 
+cur.execute("""select count(year) as num_years
+                      from babe_ruth_stats
+                      where team ="NY";""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>num_years</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>15</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 ## Most HR
 Select the row with the most HR that Babe Ruth hit in one season
 
@@ -72,6 +177,82 @@ Select the row with the most HR that Babe Ruth hit in one season
 ```python
 #Your code here
 ```
+
+
+```python
+# __SOLUTION__ 
+cur.execute("""select *
+                      from babe_ruth_stats
+                      where HR = (select max(HR) from babe_ruth_stats);""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>year</th>
+      <th>team</th>
+      <th>league</th>
+      <th>doubles</th>
+      <th>triples</th>
+      <th>hits</th>
+      <th>HR</th>
+      <th>games</th>
+      <th>runs</th>
+      <th>RBI</th>
+      <th>at_bats</th>
+      <th>BB</th>
+      <th>SB</th>
+      <th>SO</th>
+      <th>AVG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>14</td>
+      <td>1927</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>29</td>
+      <td>8</td>
+      <td>192</td>
+      <td>60</td>
+      <td>151</td>
+      <td>158</td>
+      <td>164</td>
+      <td>540</td>
+      <td>137</td>
+      <td>7</td>
+      <td>89</td>
+      <td>0.356</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 ## Least HR
 Select the row with the least number of HR hit in one season.
@@ -81,6 +262,85 @@ Select the row with the least number of HR hit in one season.
 #Your code here
 ```
 
+
+```python
+# __SOLUTION__ 
+cur.execute("""select *
+                      from babe_ruth_stats
+                      where HR = (select min(HR) from babe_ruth_stats);""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+
+#Alternatively one could also write the following query:
+#select * from babe_ruth_stats order by HR ASC limit 1;
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>year</th>
+      <th>team</th>
+      <th>league</th>
+      <th>doubles</th>
+      <th>triples</th>
+      <th>hits</th>
+      <th>HR</th>
+      <th>games</th>
+      <th>runs</th>
+      <th>RBI</th>
+      <th>at_bats</th>
+      <th>BB</th>
+      <th>SB</th>
+      <th>SO</th>
+      <th>AVG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1914</td>
+      <td>BOS</td>
+      <td>AL</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>5</td>
+      <td>1</td>
+      <td>2</td>
+      <td>10</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>0.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 ## Total HR
 Return the total number of `HR` hit by Babe Ruth during his career
 
@@ -88,6 +348,51 @@ Return the total number of `HR` hit by Babe Ruth during his career
 ```python
 #Your code here
 ```
+
+
+```python
+# __SOLUTION__ 
+cur.execute("""select sum(HR)
+                      from babe_ruth_stats;""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sum(HR)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>714</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 ##  5 Worst HR Seasons With at Least 100 Games Played
 Above you saw that Babe Ruth hit 0 home runs in his first year when he played only five games.  To avoid this and other extreme  outliers, first filter the data to those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of the number of home runs, where he played over 100 games.
@@ -97,6 +402,161 @@ Above you saw that Babe Ruth hit 0 home runs in his first year when he played on
 #Your code here
 ```
 
+
+```python
+# __SOLUTION__ 
+cur.execute("""select *
+                      from babe_ruth_stats
+                      where games > 100
+                      group by 1
+                      order by hr asc
+                      limit 5;""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>year</th>
+      <th>team</th>
+      <th>league</th>
+      <th>doubles</th>
+      <th>triples</th>
+      <th>hits</th>
+      <th>HR</th>
+      <th>games</th>
+      <th>runs</th>
+      <th>RBI</th>
+      <th>at_bats</th>
+      <th>BB</th>
+      <th>SB</th>
+      <th>SO</th>
+      <th>AVG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>21</td>
+      <td>1934</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>17</td>
+      <td>4</td>
+      <td>105</td>
+      <td>22</td>
+      <td>125</td>
+      <td>78</td>
+      <td>84</td>
+      <td>365</td>
+      <td>104</td>
+      <td>1</td>
+      <td>63</td>
+      <td>0.288</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>1919</td>
+      <td>BOS</td>
+      <td>AL</td>
+      <td>34</td>
+      <td>12</td>
+      <td>139</td>
+      <td>29</td>
+      <td>130</td>
+      <td>103</td>
+      <td>114</td>
+      <td>432</td>
+      <td>101</td>
+      <td>7</td>
+      <td>58</td>
+      <td>0.322</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>20</td>
+      <td>1933</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>21</td>
+      <td>3</td>
+      <td>138</td>
+      <td>34</td>
+      <td>137</td>
+      <td>97</td>
+      <td>103</td>
+      <td>459</td>
+      <td>114</td>
+      <td>4</td>
+      <td>90</td>
+      <td>0.301</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9</td>
+      <td>1922</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>24</td>
+      <td>8</td>
+      <td>128</td>
+      <td>35</td>
+      <td>110</td>
+      <td>94</td>
+      <td>99</td>
+      <td>406</td>
+      <td>84</td>
+      <td>2</td>
+      <td>80</td>
+      <td>0.315</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>10</td>
+      <td>1923</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>45</td>
+      <td>13</td>
+      <td>205</td>
+      <td>41</td>
+      <td>152</td>
+      <td>151</td>
+      <td>131</td>
+      <td>522</td>
+      <td>170</td>
+      <td>17</td>
+      <td>93</td>
+      <td>0.393</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 ## Average Batting Average
 Select the average, `AVG`, of Ruth's batting averages.  The header of the result would be `AVG(AVG)` which is quite confusing, so provide an alias of `career_average`.
 
@@ -104,6 +564,51 @@ Select the average, `AVG`, of Ruth's batting averages.  The header of the result
 ```python
 #Your code here
 ```
+
+
+```python
+# __SOLUTION__ 
+cur.execute("""select avg(AVG) as career_average
+                      from babe_ruth_stats;""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>career_average</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.322864</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 ## Total Years and Hits Per Team
 Select the total number of years played and hits Babe Ruth had for each team he played for.
@@ -113,6 +618,64 @@ Select the total number of years played and hits Babe Ruth had for each team he 
 #Your code here
 ```
 
+
+```python
+# __SOLUTION__ 
+cur.execute("""select team,
+                      count(year) as num_years,
+                      sum(hits) as total_hits
+                      from babe_ruth_stats
+                      group by 1;""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>team</th>
+      <th>num_years</th>
+      <th>total_hits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>BOS</td>
+      <td>7</td>
+      <td>355</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NY</td>
+      <td>15</td>
+      <td>2518</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 ## Number of Years with 300+ On Base
 We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT hits + BB FROM ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
 
@@ -120,6 +683,97 @@ We want to know the years in which Ruth successfully reached base over 300 times
 ```python
 #Your code here
 ```
+
+
+```python
+# __SOLUTION__ 
+cur.execute("""select year,
+                      hits + BB as on_base
+                      from babe_ruth_stats
+                      group by 1
+                      having hits + BB > 300
+                      order by hits + BB desc;""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+df
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>on_base</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1923</td>
+      <td>375</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1921</td>
+      <td>349</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1924</td>
+      <td>342</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1927</td>
+      <td>329</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1926</td>
+      <td>328</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1931</td>
+      <td>327</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1920</td>
+      <td>322</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1930</td>
+      <td>322</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1928</td>
+      <td>310</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 ## Summary
 
