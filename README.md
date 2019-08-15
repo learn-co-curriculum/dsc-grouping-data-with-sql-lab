@@ -44,13 +44,15 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 
 ## Connect to the Database
 
+Import sqlite3 and pandas. Then, connect to the database and instantiate a cursor.
+
 
 ```python
 #Your code here
 ```
 
 ## Total Seasons
-Return the total number of `year`s that Babe Ruth played professional baseball.
+Return the total number of years that Babe Ruth played professional baseball.
 
 
 ```python
@@ -89,7 +91,7 @@ Return the total number of `HR` hit by Babe Ruth during his career
 #Your code here
 ```
 
-##  5 Worst HR Seasons With at Least 100 Games Played
+##  Five Worst HR Seasons With at Least 100 Games Played
 Above you saw that Babe Ruth hit 0 home runs in his first year when he played only five games.  To avoid this and other extreme  outliers, first filter the data to those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of the number of home runs, where he played over 100 games.
 
 
@@ -106,15 +108,15 @@ Select the average, `AVG`, of Ruth's batting averages.  The header of the result
 ```
 
 ## Total Years and Hits Per Team
-Select the total number of years played and hits Babe Ruth had for each team he played for.
+Select the total number of years played (AS num_years) and total hits (AS total_hits) Babe Ruth had for each team he played for.
 
 
 ```python
 #Your code here
 ```
 
-## Number of Years with 300+ On Base
-We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT hits + BB FROM ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
+## Number of Years with Over 300 Times On Base
+We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT [columnName] + [columnName] AS ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
 
 
 ```python
@@ -123,4 +125,4 @@ We want to know the years in which Ruth successfully reached base over 300 times
 
 ## Summary
 
-Well done! In this lab, you continued adding complexity to SQL statements and wrote aggregate functions. You were able to build queries that showed the total years and home runs earned by team as well as calculating Babe Ruth's total on base and then selecting only years that met a minimum value of our calculated on the base attribute. 
+Well done! In this lab, you continued to add complexity to SQL statements, which included using some aggregate functions. You wrote queries that showed Babe Ruth's total years and home runs per team as well as calculated Babe Ruth's total on base percentage and then selected only years that met a minimum value of our calculated on base attribute. 
