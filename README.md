@@ -3,7 +3,7 @@
 
 ## Introduction
 
-In this lab you'll query data from a table populated with Babe Ruth's career hitting statistics.  Then you'll use aggregate functions to pull interesting information from the table that basic queries cannot track. 
+In this lab, you'll query data from a table populated with Babe Ruth's career hitting statistics.  Then you'll use aggregate functions to pull interesting information from the table that basic queries cannot track. 
 
 ## Objectives
 
