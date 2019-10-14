@@ -7,10 +7,11 @@ In this lab, you'll query data from a table populated with Babe Ruth's career hi
 
 ## Objectives
 
-* Write queries with aggregate functions like `COUNT`, `MAX`, `MIN`, and `SUM`
-* Create an alias for the return value of an aggregate function
-* Use `GROUP BY` to sort the data sets returned by aggregate functions
-* Compare aggregates using the `HAVING` clause
+* Describe the relationship between aggregate functions and `GROUP BY` statements
+* Use `Group By` statements in SQL to apply aggregate functions like: `COUNT`, `MAX`, `MIN`, and `SUM`
+* Create an alias in a SQL query
+* Use the `HAVING` clause to compare different aggregates
+* Compare the difference between the `WHERE` and `HAVING` clause
 
 ## Babe Ruth - Career Hitting Statistics
 
@@ -242,7 +243,6 @@ df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 df
 
-
 ## Alternatively one could also write the following query.
 ## This includes a subselect, which you will see in an upcoming lesson:
 # cur.execute("""SELECT * FROM babe_ruth_stats WHERE HR = (SELECT MIN(HR) FROM babe_ruth_stats);""")
@@ -360,7 +360,7 @@ df
 
 
 ##  Five Worst HR Seasons With at Least 100 Games Played
-Above you saw that Babe Ruth hit 0 home runs in his first year when he played only five games.  To avoid this and other extreme  outliers, first filter the data to those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of the number of home runs, where he played over 100 games.
+Above you saw that Babe Ruth hit 0 home runs in his first year when he played only five games.  To avoid this and other extreme  outliers, first filter the data to include only those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of the number of home runs, where he played over 100 games.
 
 
 ```python
@@ -714,4 +714,4 @@ df
 
 ## Summary
 
-Well done! In this lab, you continued to add complexity to SQL statements, which included using some aggregate functions. You wrote queries that showed Babe Ruth's total years and home runs per team as well as calculated Babe Ruth's total on base percentage and then selected only years that met a minimum value of our calculated on base attribute. 
+Well done! In this lab, you continued to add complexity to SQL statements, which included using some aggregate functions, the `GROUP BY` statement, and the `HAVING` statement. You wrote queries that showed Babe Ruth's total years and home runs per team as well as selected only years that met a minimum value of our calculated on base attribute. 
