@@ -49,15 +49,15 @@ Import sqlite3 and pandas. Then, connect to the database in the `babe_ruth.db` f
 
 
 ```
-#Your code here
+# Your code here
 ```
 
 ## Total Seasons
-Return the total number of years that Babe Ruth played professional baseball.
+Return the total number of years that Babe Ruth played professional baseball
 
 
 ```
-#Your code here
+# Your code here
 ```
 
 ## Seasons with NY
