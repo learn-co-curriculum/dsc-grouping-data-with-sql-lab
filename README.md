@@ -60,10 +60,11 @@ cur = conn.cursor()
 ```
 
 ## Total Seasons
-Return the total number of years that Babe Ruth played professional baseball.
+Return the total number of years that Babe Ruth played professional baseball
 
 
 ```
+
 cur.execute("""SELECT COUNT(year) AS num_years FROM babe_ruth_stats;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
