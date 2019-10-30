@@ -49,7 +49,7 @@ Import sqlite3 and pandas. Then, connect to the database in the `babe_ruth.db` f
 
 
 ```
-#Your code here
+# Your code here
 ```
 
 
@@ -67,16 +67,17 @@ cur = conn.cursor()
 ```
 
 ## Total Seasons
-Return the total number of years that Babe Ruth played professional baseball.
+Return the total number of years that Babe Ruth played professional baseball
 
 
 ```
-#Your code here
+# Your code here
 ```
 
 
 ```
-# __SOLUTION__ 
+# __SOLUTION__
+
 cur.execute("""SELECT COUNT(year) AS num_years FROM babe_ruth_stats;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
