@@ -8,7 +8,7 @@ In this lab, you'll query data from a table populated with Babe Ruth's career hi
 ## Objectives
 
 * Describe the relationship between aggregate functions and `GROUP BY` statements
-* Use `Group By` statements in SQL to apply aggregate functions like: `COUNT`, `MAX`, `MIN`, and `SUM`
+* Use `Group BY` statements in SQL to apply aggregate functions like: `COUNT`, `MAX`, `MIN`, and `SUM`
 * Create an alias in a SQL query
 * Use the `HAVING` clause to compare different aggregates
 * Compare the difference between the `WHERE` and `HAVING` clause
@@ -48,13 +48,13 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 Import sqlite3 and pandas. Then, connect to the database in the `babe_ruth.db` file and instantiate a cursor. In the following questions write SQL queries to answer questions about the data on the `babe_ruth_stats` table.
 
 
-```
+```python
 import sqlite3
 import pandas as pd
 ```
 
 
-```
+```python
 conn = sqlite3.connect('babe_ruth.db')
 cur = conn.cursor()
 ```
@@ -63,9 +63,9 @@ cur = conn.cursor()
 Return the total number of years that Babe Ruth played professional baseball
 
 
-```
-
-cur.execute("""SELECT COUNT(year) AS num_years FROM babe_ruth_stats;""")
+```python
+cur.execute("""SELECT COUNT(year) AS num_years 
+               FROM babe_ruth_stats;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 df
@@ -97,7 +97,7 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>22</td>
     </tr>
   </tbody>
@@ -110,7 +110,7 @@ df
 Return the total number of years Babe Ruth played with the NY Yankees.
 
 
-```
+```python
 cur.execute("""SELECT COUNT(year) AS num_years
                FROM babe_ruth_stats
                WHERE team ="NY";""")
@@ -145,7 +145,7 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>15</td>
     </tr>
   </tbody>
@@ -158,13 +158,16 @@ df
 Select the row with the most HR that Babe Ruth hit in one season
 
 
-```
-cur.execute("SELECT * FROM babe_ruth_stats ORDER BY HR DESC limit 1;")
+```python
+cur.execute("""SELECT * 
+            FROM babe_ruth_stats 
+            ORDER BY HR DESC 
+            LIMIT 1;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 df
 
-## Alternatively one could also write the following query.
+## Alternatively, one could also write the following query.
 ## This includes a subselect, which you will see in an upcoming lesson:
 # cur.execute("""SELECT * FROM babe_ruth_stats WHERE HR = (SELECT MAX(HR) FROM babe_ruth_stats);""")
 ```
@@ -210,7 +213,7 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>14</td>
       <td>1927</td>
       <td>NY</td>
@@ -238,13 +241,16 @@ df
 Select the row with the least number of HR hit in one season.
 
 
-```
-cur.execute("SELECT * FROM babe_ruth_stats ORDER BY HR ASC limit 1;")
+```python
+cur.execute("""SELECT * 
+               FROM babe_ruth_stats 
+               ORDER BY HR 
+               LIMIT 1;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 df
 
-## Alternatively one could also write the following query.
+## Alternatively, one could also write the following query.
 ## This includes a subselect, which you will see in an upcoming lesson:
 # cur.execute("""SELECT * FROM babe_ruth_stats WHERE HR = (SELECT MIN(HR) FROM babe_ruth_stats);""")
 ```
@@ -290,7 +296,7 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>1</td>
       <td>1914</td>
       <td>BOS</td>
@@ -318,8 +324,9 @@ df
 Return the total number of `HR` hit by Babe Ruth during his career
 
 
-```
-cur.execute("""SELECT sum(HR) FROM babe_ruth_stats;""")
+```python
+cur.execute("""SELECT sum(HR) 
+               FROM babe_ruth_stats;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 df
@@ -351,7 +358,7 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>714</td>
     </tr>
   </tbody>
@@ -364,12 +371,11 @@ df
 Above you saw that Babe Ruth hit 0 home runs in his first year when he played only five games.  To avoid this and other extreme  outliers, first filter the data to include only those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of the number of home runs, where he played over 100 games.
 
 
-```
+```python
 cur.execute("""SELECT *
                FROM babe_ruth_stats
                WHERE games > 100
-               GROUP BY 1
-               ORDER BY HR ASC
+               ORDER BY HR
                LIMIT 5;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
@@ -417,7 +423,7 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>21</td>
       <td>1934</td>
       <td>NY</td>
@@ -436,7 +442,7 @@ df
       <td>0.288</td>
     </tr>
     <tr>
-      <td>1</td>
+      <th>1</th>
       <td>6</td>
       <td>1919</td>
       <td>BOS</td>
@@ -455,7 +461,7 @@ df
       <td>0.322</td>
     </tr>
     <tr>
-      <td>2</td>
+      <th>2</th>
       <td>20</td>
       <td>1933</td>
       <td>NY</td>
@@ -474,7 +480,7 @@ df
       <td>0.301</td>
     </tr>
     <tr>
-      <td>3</td>
+      <th>3</th>
       <td>9</td>
       <td>1922</td>
       <td>NY</td>
@@ -493,7 +499,7 @@ df
       <td>0.315</td>
     </tr>
     <tr>
-      <td>4</td>
+      <th>4</th>
       <td>10</td>
       <td>1923</td>
       <td>NY</td>
@@ -521,8 +527,9 @@ df
 Select the average, `AVG`, of Ruth's batting averages.  The header of the result would be `AVG(AVG)` which is quite confusing, so provide an alias of `career_average`.
 
 
-```
-cur.execute("""SELECT AVG(AVG) AS career_average FROM babe_ruth_stats;""")
+```python
+cur.execute("""SELECT AVG(AVG) AS career_average 
+               FROM babe_ruth_stats;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 df
@@ -554,7 +561,7 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>0.322864</td>
     </tr>
   </tbody>
@@ -567,7 +574,7 @@ df
 Select the total number of years played (AS num_years) and total hits (AS total_hits) Babe Ruth had for each team he played for.
 
 
-```
+```python
 cur.execute("""SELECT team, COUNT(year) AS num_years, SUM(hits) AS total_hits
                FROM babe_ruth_stats
                GROUP BY team;""")
@@ -604,13 +611,13 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>BOS</td>
       <td>7</td>
       <td>355</td>
     </tr>
     <tr>
-      <td>1</td>
+      <th>1</th>
       <td>NY</td>
       <td>15</td>
       <td>2518</td>
@@ -625,7 +632,7 @@ df
 We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT [columnName] + [columnName] AS ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
 
 
-```
+```python
 cur.execute("""SELECT year, hits + BB AS on_base
                FROM babe_ruth_stats
                GROUP BY year
@@ -663,47 +670,47 @@ df
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>1923</td>
       <td>375</td>
     </tr>
     <tr>
-      <td>1</td>
+      <th>1</th>
       <td>1921</td>
       <td>349</td>
     </tr>
     <tr>
-      <td>2</td>
+      <th>2</th>
       <td>1924</td>
       <td>342</td>
     </tr>
     <tr>
-      <td>3</td>
+      <th>3</th>
       <td>1927</td>
       <td>329</td>
     </tr>
     <tr>
-      <td>4</td>
+      <th>4</th>
       <td>1926</td>
       <td>328</td>
     </tr>
     <tr>
-      <td>5</td>
+      <th>5</th>
       <td>1931</td>
       <td>327</td>
     </tr>
     <tr>
-      <td>6</td>
+      <th>6</th>
       <td>1920</td>
       <td>322</td>
     </tr>
     <tr>
-      <td>7</td>
+      <th>7</th>
       <td>1930</td>
       <td>322</td>
     </tr>
     <tr>
-      <td>8</td>
+      <th>8</th>
       <td>1928</td>
       <td>310</td>
     </tr>
