@@ -8,7 +8,7 @@ In this lab, you'll query data from a table populated with Babe Ruth's career hi
 ## Objectives
 
 * Describe the relationship between aggregate functions and `GROUP BY` statements
-* Use `Group By` statements in SQL to apply aggregate functions like: `COUNT`, `MAX`, `MIN`, and `SUM`
+* Use `Group BY` statements in SQL to apply aggregate functions like: `COUNT`, `MAX`, `MIN`, and `SUM`
 * Create an alias in a SQL query
 * Use the `HAVING` clause to compare different aggregates
 * Compare the difference between the `WHERE` and `HAVING` clause
@@ -48,7 +48,7 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 Import sqlite3 and pandas. Then, connect to the database in the `babe_ruth.db` file and instantiate a cursor. In the following questions write SQL queries to answer questions about the data on the `babe_ruth_stats` table.
 
 
-```
+```python
 # Your code here
 ```
 
@@ -56,7 +56,7 @@ Import sqlite3 and pandas. Then, connect to the database in the `babe_ruth.db` f
 Return the total number of years that Babe Ruth played professional baseball
 
 
-```
+```python
 # Your code here
 ```
 
@@ -64,64 +64,64 @@ Return the total number of years that Babe Ruth played professional baseball
 Return the total number of years Babe Ruth played with the NY Yankees.
 
 
-```
-#Your code here
+```python
+# Your code here
 ```
 
 ## Most HR
 Select the row with the most HR that Babe Ruth hit in one season
 
 
-```
-#Your code here
+```python
+# Your code here
 ```
 
 ## Least HR
 Select the row with the least number of HR hit in one season.
 
 
-```
-#Your code here
+```python
+# Your code here
 ```
 
 ## Total HR
 Return the total number of `HR` hit by Babe Ruth during his career
 
 
-```
-#Your code here
+```python
+# Your code here
 ```
 
 ##  Five Worst HR Seasons With at Least 100 Games Played
 Above you saw that Babe Ruth hit 0 home runs in his first year when he played only five games.  To avoid this and other extreme  outliers, first filter the data to include only those years in which Ruth played in at least 100 games. Then, select all of the columns for the 5 worst seasons, in terms of the number of home runs, where he played over 100 games.
 
 
-```
-#Your code here
+```python
+# Your code here
 ```
 
 ## Average Batting Average
 Select the average, `AVG`, of Ruth's batting averages.  The header of the result would be `AVG(AVG)` which is quite confusing, so provide an alias of `career_average`.
 
 
-```
-#Your code here
+```python
+# Your code here
 ```
 
 ## Total Years and Hits Per Team
 Select the total number of years played (AS num_years) and total hits (AS total_hits) Babe Ruth had for each team he played for.
 
 
-```
-#Your code here
+```python
+# Your code here
 ```
 
 ## Number of Years with Over 300 Times On Base
 We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT [columnName] + [columnName] AS ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
 
 
-```
-#Your code here
+```python
+# Your code here
 ```
 
 ## Summary
