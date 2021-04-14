@@ -1,4 +1,3 @@
-
 # Grouping Data with SQL - Lab
 
 ## Introduction
@@ -15,8 +14,30 @@ In this lab, you'll query data from a table populated with Babe Ruth's career hi
 
 ## Babe Ruth - Career Hitting Statistics
 
+The database you will be working with in this lab is located in the file `babe_ruth.db`. This database contains a single table, `babe_ruth_stats`. The table schema is:
 
-We will query from a table containing data of Babe Ruth statistics that has the structure below. The name of the table is `babe_ruth_stats`, it can be found in the `babe_ruth.db` file in this repo.
+```
+CREATE TABLE babe_ruth_stats (
+  id INTEGER PRIMARY KEY,
+  year INTEGER,
+  team TEXT,
+  league TEXT,
+  doubles INTEGER,
+  triples INTEGER,
+  hits INTEGER,
+  HR INTEGER,
+  games INTEGER,
+  runs INTEGER,
+  RBI INTEGER,
+  at_bats INTEGER,
+  BB INTEGER,
+  SB INTEGER,
+  SO INTEGER,
+  AVG REAL
+)
+```
+
+The table contains the following data:
 
 year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 ----|-----|------|-------|-------|----|--|-----|----|---|-------|---|--|--|------
@@ -43,14 +64,18 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 1934|"NY" |"AL"  |17     |4      |105 |22|125  |78  |84 |365    |104|1 |63|0.288
 1935|"BOS"|"NL"  |0      |0      |13  |6 |28   |13  |12 |72     |20 |0 |24|0.181
 
+As you can see, each record in this table represents statistics for a baseball season.
+
 ## Connect to the Database
 
-Import sqlite3 and pandas. Then, connect to the database in the `babe_ruth.db` file and instantiate a cursor. In the following questions write SQL queries to answer questions about the data on the `babe_ruth_stats` table.
+Import `sqlite3` and `pandas`. Then, connect to the database in the `babe_ruth.db` file.
 
 
 ```python
 # Your code here
 ```
+
+Now, write SQL queries to answer questions about the data in the `babe_ruth_stats` table. You can display all results using pandas for readability.
 
 ## Total Seasons
 Return the total number of years that Babe Ruth played professional baseball
@@ -61,15 +86,16 @@ Return the total number of years that Babe Ruth played professional baseball
 ```
 
 ## Seasons with NY
-Return the total number of years Babe Ruth played with the NY Yankees.
+Return the total number of years Babe Ruth played with the NY Yankees (i.e. where the `team` value is `"NY"`).
 
 
 ```python
 # Your code here
 ```
 
-## Most HR
-Select the row with the most HR that Babe Ruth hit in one season
+## Most Home Runs
+
+Return the row with the most HR that Babe Ruth hit in one season.
 
 
 ```python
@@ -85,7 +111,7 @@ Select the row with the least number of HR hit in one season.
 ```
 
 ## Total HR
-Return the total number of `HR` hit by Babe Ruth during his career
+Return the total number of HR hit by Babe Ruth during his career.
 
 
 ```python
@@ -108,16 +134,44 @@ Select the average, `AVG`, of Ruth's batting averages.  The header of the result
 # Your code here
 ```
 
-## Total Years and Hits Per Team
-Select the total number of years played (AS num_years) and total hits (AS total_hits) Babe Ruth had for each team he played for.
+## Number of Years with Over 300 Times On Base
+We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT [columnName] + [columnName] AS ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
 
 
 ```python
 # Your code here
 ```
 
-## Number of Years with Over 300 Times On Base
-We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT [columnName] + [columnName] AS ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
+## Total Years and Hits Per Team
+Select the total number of years played (as `num_seasons`) and total hits (as `total_hits`) Babe Ruth had for each team he played for. The result should have 2 rows, one for each team.
+
+
+```python
+# Your code here
+```
+
+## Teams with More than 10 Seasons
+Repeat the above query, this time only including teams where he played for more than 10 years.
+
+**Hint:** Think about whether this filtering occurs before or after the `GROUP BY`. If before, that's a `WHERE`. If after, that's a `HAVING`.
+
+
+```python
+# Your code here
+```
+
+## Team with Highest Average At Bats
+
+Select the name of the team and the average at bats per season (as `average_at_bats`), for the team where he averaged the highest at bats.
+
+
+```python
+# Your code here
+```
+
+## Teams with Average At Bats Over 100
+
+Repeat the above query, this time returning all teams where the `average_at_bats` was over 100.
 
 
 ```python
