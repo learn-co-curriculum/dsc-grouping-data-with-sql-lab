@@ -1,4 +1,3 @@
-
 # Grouping Data with SQL - Lab
 
 ## Introduction
@@ -15,8 +14,30 @@ In this lab, you'll query data from a table populated with Babe Ruth's career hi
 
 ## Babe Ruth - Career Hitting Statistics
 
+The database you will be working with in this lab is located in the file `babe_ruth.db`. This database contains a single table, `babe_ruth_stats`. The table schema is:
 
-We will query from a table containing data of Babe Ruth statistics that has the structure below. The name of the table is `babe_ruth_stats`, it can be found in the `babe_ruth.db` file in this repo.
+```
+CREATE TABLE babe_ruth_stats (
+  id INTEGER PRIMARY KEY,
+  year INTEGER,
+  team TEXT,
+  league TEXT,
+  doubles INTEGER,
+  triples INTEGER,
+  hits INTEGER,
+  HR INTEGER,
+  games INTEGER,
+  runs INTEGER,
+  RBI INTEGER,
+  at_bats INTEGER,
+  BB INTEGER,
+  SB INTEGER,
+  SO INTEGER,
+  AVG REAL
+)
+```
+
+The table contains the following data:
 
 year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 ----|-----|------|-------|-------|----|--|-----|----|---|-------|---|--|--|------
@@ -43,9 +64,11 @@ year|team |league|doubles|triples|hits|HR|games|runs|RBI|at_bats|BB |SB|SO|AVG
 1934|"NY" |"AL"  |17     |4      |105 |22|125  |78  |84 |365    |104|1 |63|0.288
 1935|"BOS"|"NL"  |0      |0      |13  |6 |28   |13  |12 |72     |20 |0 |24|0.181
 
+As you can see, each record in this table represents statistics for a baseball season.
+
 ## Connect to the Database
 
-Import sqlite3 and pandas. Then, connect to the database in the `babe_ruth.db` file and instantiate a cursor. In the following questions write SQL queries to answer questions about the data on the `babe_ruth_stats` table.
+Import `sqlite3` and `pandas`. Then, connect to the database in the `babe_ruth.db` file.
 
 
 ```python
@@ -56,19 +79,24 @@ import pandas as pd
 
 ```python
 conn = sqlite3.connect('babe_ruth.db')
-cur = conn.cursor()
 ```
+
+Now, write SQL queries to answer questions about the data in the `babe_ruth_stats` table. You can display all results using pandas for readability.
 
 ## Total Seasons
 Return the total number of years that Babe Ruth played professional baseball
 
 
 ```python
-cur.execute("""SELECT COUNT(year) AS num_years 
-               FROM babe_ruth_stats;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
+# Note that we don't need to group by anything since every
+# record in the table represents a year. We can just go
+# right to counting records
+q = """
+SELECT COUNT(*) AS num_seasons
+FROM babe_ruth_stats
+;
+"""
+pd.read_sql(q, conn)
 ```
 
 
@@ -92,7 +120,7 @@ df
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>num_years</th>
+      <th>num_seasons</th>
     </tr>
   </thead>
   <tbody>
@@ -107,16 +135,17 @@ df
 
 
 ## Seasons with NY
-Return the total number of years Babe Ruth played with the NY Yankees.
+Return the total number of years Babe Ruth played with the NY Yankees (i.e. where the `team` value is `"NY"`).
 
 
 ```python
-cur.execute("""SELECT COUNT(year) AS num_years
-               FROM babe_ruth_stats
-               WHERE team ="NY";""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
+q = """
+SELECT COUNT(*) as num_seasons_ny
+FROM babe_ruth_stats
+WHERE team = "NY"
+;
+"""
+pd.read_sql(q, conn)
 ```
 
 
@@ -140,7 +169,7 @@ df
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>num_years</th>
+      <th>num_seasons_ny</th>
     </tr>
   </thead>
   <tbody>
@@ -154,22 +183,102 @@ df
 
 
 
-## Most HR
-Select the row with the most HR that Babe Ruth hit in one season
+## Most Home Runs
+
+Return the row with the most HR that Babe Ruth hit in one season.
 
 
 ```python
-cur.execute("""SELECT * 
-            FROM babe_ruth_stats 
-            ORDER BY HR DESC 
-            LIMIT 1;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
+q = """
+SELECT *
+FROM babe_ruth_stats
+ORDER BY HR DESC
+LIMIT 1
+;
+"""
+pd.read_sql(q, conn)
+```
 
-## Alternatively, one could also write the following query.
-## This includes a subselect, which you will see in an upcoming lesson:
-# cur.execute("""SELECT * FROM babe_ruth_stats WHERE HR = (SELECT MAX(HR) FROM babe_ruth_stats);""")
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>year</th>
+      <th>team</th>
+      <th>league</th>
+      <th>doubles</th>
+      <th>triples</th>
+      <th>hits</th>
+      <th>HR</th>
+      <th>games</th>
+      <th>runs</th>
+      <th>RBI</th>
+      <th>at_bats</th>
+      <th>BB</th>
+      <th>SB</th>
+      <th>SO</th>
+      <th>AVG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>14</td>
+      <td>1927</td>
+      <td>NY</td>
+      <td>AL</td>
+      <td>29</td>
+      <td>8</td>
+      <td>192</td>
+      <td>60</td>
+      <td>151</td>
+      <td>158</td>
+      <td>164</td>
+      <td>540</td>
+      <td>137</td>
+      <td>7</td>
+      <td>89</td>
+      <td>0.356</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+# Alternatively, one could also write the following query in order to
+# use the MAX function instead of ORDER BY and LIMIT
+# This includes a subquery, which you will see in an upcoming lesson:
+q = """
+SELECT *
+FROM babe_ruth_stats
+WHERE HR = (
+    SELECT MAX(HR)
+    FROM babe_ruth_stats
+)
+;
+"""
+pd.read_sql(q, conn)
 ```
 
 
@@ -242,17 +351,95 @@ Select the row with the least number of HR hit in one season.
 
 
 ```python
-cur.execute("""SELECT * 
-               FROM babe_ruth_stats 
-               ORDER BY HR 
-               LIMIT 1;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
+# This is the same as the previous query, without DESC
+q = """
+SELECT *
+FROM babe_ruth_stats
+ORDER BY HR
+LIMIT 1
+;
+"""
+pd.read_sql(q, conn)
+```
 
-## Alternatively, one could also write the following query.
-## This includes a subselect, which you will see in an upcoming lesson:
-# cur.execute("""SELECT * FROM babe_ruth_stats WHERE HR = (SELECT MIN(HR) FROM babe_ruth_stats);""")
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>year</th>
+      <th>team</th>
+      <th>league</th>
+      <th>doubles</th>
+      <th>triples</th>
+      <th>hits</th>
+      <th>HR</th>
+      <th>games</th>
+      <th>runs</th>
+      <th>RBI</th>
+      <th>at_bats</th>
+      <th>BB</th>
+      <th>SB</th>
+      <th>SO</th>
+      <th>AVG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1914</td>
+      <td>BOS</td>
+      <td>AL</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>5</td>
+      <td>1</td>
+      <td>2</td>
+      <td>10</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4</td>
+      <td>0.2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+# Again, there is a way to use a subquery and MIN
+q = """
+SELECT *
+FROM babe_ruth_stats
+WHERE HR = (
+    SELECT MIN(HR)
+    FROM babe_ruth_stats
+)
+;
+"""
+pd.read_sql(q, conn)
 ```
 
 
@@ -321,15 +508,16 @@ df
 
 
 ## Total HR
-Return the total number of `HR` hit by Babe Ruth during his career
+Return the total number of HR hit by Babe Ruth during his career.
 
 
 ```python
-cur.execute("""SELECT sum(HR) 
-               FROM babe_ruth_stats;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
+q = """
+SELECT SUM(HR) AS total_home_runs
+FROM babe_ruth_stats
+;
+"""
+pd.read_sql(q, conn)
 ```
 
 
@@ -353,7 +541,7 @@ df
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>sum(HR)</th>
+      <th>total_home_runs</th>
     </tr>
   </thead>
   <tbody>
@@ -372,14 +560,15 @@ Above you saw that Babe Ruth hit 0 home runs in his first year when he played on
 
 
 ```python
-cur.execute("""SELECT *
-               FROM babe_ruth_stats
-               WHERE games > 100
-               ORDER BY HR
-               LIMIT 5;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
+q = """
+SELECT *
+FROM babe_ruth_stats
+WHERE games > 100
+ORDER BY HR
+LIMIT 5
+;
+"""
+pd.read_sql(q, conn)
 ```
 
 
@@ -528,11 +717,12 @@ Select the average, `AVG`, of Ruth's batting averages.  The header of the result
 
 
 ```python
-cur.execute("""SELECT AVG(AVG) AS career_average 
-               FROM babe_ruth_stats;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
+q = """
+SELECT AVG(AVG) AS career_average
+FROM babe_ruth_stats
+;
+"""
+pd.read_sql(q, conn)
 ```
 
 
@@ -570,77 +760,19 @@ df
 
 
 
-## Total Years and Hits Per Team
-Select the total number of years played (AS num_years) and total hits (AS total_hits) Babe Ruth had for each team he played for.
-
-
-```python
-cur.execute("""SELECT team, COUNT(year) AS num_years, SUM(hits) AS total_hits
-               FROM babe_ruth_stats
-               GROUP BY team;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>team</th>
-      <th>num_years</th>
-      <th>total_hits</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>BOS</td>
-      <td>7</td>
-      <td>355</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>NY</td>
-      <td>15</td>
-      <td>2518</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
 ## Number of Years with Over 300 Times On Base
 We want to know the years in which Ruth successfully reached base over 300 times.  We need to add `hits` and `BB` to calculate how many times Ruth reached base.  Simply add the two columns together (ie: `SELECT [columnName] + [columnName] AS ...`) and give this value an alias of `on_base`.  Select the `year` and `on_base` for only those years with an `on_base` over 300.  
 
 
 ```python
-cur.execute("""SELECT year, hits + BB AS on_base
-               FROM babe_ruth_stats
-               GROUP BY year
-               HAVING on_base > 300
-               ORDER BY on_base DESC;""")
-df = pd.DataFrame(cur.fetchall())
-df.columns = [i[0] for i in cur.description]
-df
+q = """
+SELECT year, hits + BB AS on_base
+FROM babe_ruth_stats
+WHERE on_base > 300
+ORDER BY on_base DESC
+;
+"""
+pd.read_sql(q, conn)
 ```
 
 
@@ -713,6 +845,233 @@ df
       <th>8</th>
       <td>1928</td>
       <td>310</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+## Total Years and Hits Per Team
+Select the total number of years played (as `num_seasons`) and total hits (as `total_hits`) Babe Ruth had for each team he played for. The result should have 2 rows, one for each team.
+
+
+```python
+q = """
+SELECT team, COUNT(*) AS num_seasons, SUM(hits) AS total_hits
+FROM babe_ruth_stats
+GROUP BY team
+;
+"""
+pd.read_sql(q, conn)
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>team</th>
+      <th>num_seasons</th>
+      <th>total_hits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>BOS</td>
+      <td>7</td>
+      <td>355</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NY</td>
+      <td>15</td>
+      <td>2518</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+## Teams with More than 10 Seasons
+Repeat the above query, this time only including teams where he played for more than 10 years.
+
+**Hint:** Think about whether this filtering occurs before or after the `GROUP BY`. If before, that's a `WHERE`. If after, that's a `HAVING`.
+
+
+```python
+q = """
+SELECT team, COUNT(*) AS num_seasons, SUM(hits) AS total_hits
+FROM babe_ruth_stats
+GROUP BY team
+HAVING num_seasons > 10
+;
+"""
+pd.read_sql(q, conn)
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>team</th>
+      <th>num_seasons</th>
+      <th>total_hits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NY</td>
+      <td>15</td>
+      <td>2518</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+## Team with Highest Average At Bats
+
+Select the name of the team and the average at bats per season (as `average_at_bats`), for the team where he averaged the highest at bats.
+
+
+```python
+q = """
+SELECT team, AVG(at_bats) AS average_at_bats
+FROM babe_ruth_stats
+GROUP BY team
+ORDER BY average_at_bats DESC
+LIMIT 1
+;
+"""
+pd.read_sql(q, conn)
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>team</th>
+      <th>average_at_bats</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NY</td>
+      <td>481.133333</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+## Teams with Average At Bats Over 100
+
+Repeat the above query, this time returning all teams where the `average_at_bats` was over 100.
+
+
+```python
+q = """
+SELECT team, AVG(at_bats) AS average_at_bats
+FROM babe_ruth_stats
+GROUP BY team
+HAVING average_at_bats > 100
+;
+"""
+pd.read_sql(q, conn)
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>team</th>
+      <th>average_at_bats</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>BOS</td>
+      <td>168.857143</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NY</td>
+      <td>481.133333</td>
     </tr>
   </tbody>
 </table>
